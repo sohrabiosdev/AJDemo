@@ -1,6 +1,8 @@
 import React from "react";
 import {Dimensions, Text, View} from "react-native";
 import Animated from "react-native-reanimated";
+import {AppIcon} from "../lib/IconUtils";
+import {Icons} from "../icons/common";
 // import { Feather as Icon } from "@expo/vector-icons";
 
 const {sub, interpolate, Extrapolate} = Animated;
@@ -44,11 +46,15 @@ export default ({progress, y}: ButtonProps) => {
                 width: 40,
                 height: 40,
                 borderRadius: 20,
-                backgroundColor: "red",
+                backgroundColor: "white",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
             }}>
-                <Text style={{fontSize: 15, fontWeight: "500"}}> {">"} </Text>
+                <AppIcon
+                    name={"face"}
+                    color={"blue"}
+                    provider={Icons}
+                    size={40}/>
             </View>
         </Animated.View>
     );
