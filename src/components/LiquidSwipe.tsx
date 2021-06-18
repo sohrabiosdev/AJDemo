@@ -67,10 +67,10 @@ export const LiquidScreen = () => {
         state,
         isBack,
         snapPoint(
-            gestureProgress[" __value"],
+            gestureProgress,
             divide(
-                multiply(-1, velocityX[" __value"]),
-                cond(isBack[" __value"], maxDist[" __value"], multiply(maxDist[" __value"], 0.4))
+                multiply(-1, velocityX),
+                cond(isBack, maxDist, multiply(maxDist, 0.4))
             ),
             [0, 1]
         )
@@ -86,7 +86,7 @@ export const LiquidScreen = () => {
     return (
         <View style={styles.container}>
             <Content
-                backgroundColor="white"
+                backgroundColor="blue"
                 source={assets[0]}
                 title1="Online"
                 title2="Gambling"

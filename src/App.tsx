@@ -14,7 +14,7 @@ import {LiquidScreen} from './components/LiquidSwipe';
 
 export default function App() {
     return (
-        <View>
+        <View style={{flex: 1}}>
             <LiquidScreen />
         </View>
     );
