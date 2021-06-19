@@ -2,18 +2,25 @@ import LinearGradient from "react-native-linear-gradient";
 import React, {useEffect, useState} from "react";
 import {AppIcon} from "../lib/IconUtils";
 import {Icons} from "../icons/common";
-import {Alert, Text, View} from "react-native";
+import {Text, View} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import useForceUpdate from "use-force-update";
+import LottieView from "lottie-react-native";
 
-const values = [{id: 1, name: "happy_face", isSelected: false} , {id: 2, name: "neutral_face", isSelected: false}, {id: 3, name: "sad_face", isSelected: false}]
+const values = [{id: 1, name: "happy_face", isSelected: false}, {
+    id: 2,
+    name: "neutral_face",
+    isSelected: false
+}, {id: 3, name: "sad_face", isSelected: false}]
 export const Happiness = () => {
     const [faces, setFaces] = useState(values);
+    const [showFace, setShowFace] = useState(true);
     const forceUpdate = useForceUpdate();
 
     const handleOnFacePressed = (selFace) => {
         faces.map((face) => {
             face.isSelected = face === selFace;
+            setShowFace(false)
         });
         setFaces(faces);
         forceUpdate();
@@ -38,18 +45,27 @@ export const Happiness = () => {
                             }}>
                 <CloseButton onClosePressed={handleOnClosePressed}/>
                 <View style={{flex: 1}}/>
-                <View style={{height: 70, flexDirection: "row", alignItems: "center", alignSelf: "center",
-                    justifyContent: "center"}}>
+                {showFace && <View style={{
+                    height: 70, flexDirection: "row", alignItems: "center", alignSelf: "center",
+                    justifyContent: "center"
+                }}>
                     {faces.map((face) => {
                         return <Face type={face} onFacePressed={handleOnFacePressed}/>
                     })}
-                </View>
+                </View>}
                 <View style={{height: 10}}/>
-                <View style={{  alignItems: "center",
-                    justifyContent: "center",}}>
+                <View style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}>
                     {faces.map((face) => {
                         if (face.isSelected) {
-                            return <Text style={{fontWeight: "700", fontSize: 15, color: "white"}}>Thankyou for providing your feedback.</Text>
+                            return <View style={{justifyContent: "center", alignItems: "center"}}>
+                                <LottieView resizeMode={"contain"} source={require('../../assets/success0.json')}
+                                            autoPlay={true} loop={false} style={{height: 150}}/>
+                                <Text style={{fontWeight: "700", fontSize: 15, color: "white", marginTop: 20}}>Thankyou
+                                    for providing your feedback.</Text>
+                            </View>
                         } else {
                             return <View/>
                         }
@@ -67,7 +83,7 @@ export const Face = (props) => {
         onFacePressed(props.type);
     }
     return (
-        <TouchableOpacity  onPress={handlePress}>
+        <TouchableOpacity onPress={handlePress}>
             <View style={{
                 width: 40,
                 height: 40,
@@ -78,7 +94,7 @@ export const Face = (props) => {
                 marginHorizontal: 10
             }}>
                 <AppIcon
-                    name={type.isSelected ? type.name + "_sel": type.name}
+                    name={type.isSelected ? type.name + "_sel" : type.name}
                     color={"white"}
                     provider={Icons}
                     size={40}/>
@@ -93,7 +109,7 @@ export const CloseButton = (props) => {
         onClosePressed();
     }
     return (
-        <TouchableOpacity  style={{marginTop: 50, marginLeft: 10}} onPress={handlePress}>
+        <TouchableOpacity style={{marginTop: 50, marginLeft: 10}} onPress={handlePress}>
             <AppIcon
                 name={"close"}
                 color={"white"}
