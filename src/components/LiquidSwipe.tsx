@@ -1,5 +1,5 @@
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import React, {Component, useEffect, useState} from "react";
+import {Alert, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Animated, {
     Value,
     cond,
@@ -22,6 +22,8 @@ import {
 } from "./WeaveHelpers";
 import Content from "./Content";
 import Button from "./Button";
+import Home from "../screens/Home";
+import {Happiness} from "../screens/Happiness";
 
 export const assets = [
     require("../assets/firstPageImage.png"),
@@ -33,10 +35,12 @@ const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "center"
     },
 });
 
 export const LiquidScreen = () => {
+    const [showModal, setShowModal] = useState(true);
     const y = new Value(initialWaveCenter);
     const translationX = new Value(0);
     const velocityX = new Value(0);
@@ -85,27 +89,23 @@ export const LiquidScreen = () => {
     const sWidth = sideWidth(progress);
     return (
         <View style={styles.container}>
-            <Content
-                backgroundColor="blue"
-                source={assets[0]}
-                title1="Online"
-                title2="Gambling"
-                color="black"
-            />
-            <PanGestureHandler {...gestureHandler}>
-                <Animated.View style={StyleSheet.absoluteFill}>
-                    <Weave sideWidth={sWidth} {...{ centerY, horRadius, vertRadius }}>
-                        <Content
-                            backgroundColor="red"
-                            source={assets[1]}
-                            title1="For"
-                            title2="Gamers"
-                            color="#fd5587"
-                        />
-                    </Weave>
-                    <Button y={centerY} {...{ progress }} />
-                </Animated.View>
-            </PanGestureHandler>
+            <Happiness/>
+            {/*<Modal visible={true} transparent={true}>*/}
+            {/*    <PanGestureHandler {...gestureHandler}>*/}
+            {/*        <Animated.View style={StyleSheet.absoluteFill}>*/}
+            {/*            <Weave sideWidth={sWidth} {...{ centerY, horRadius, vertRadius }}>*/}
+            {/*                <Content*/}
+            {/*                    backgroundColor="red"*/}
+            {/*                    source={assets[1]}*/}
+            {/*                    title1="For"*/}
+            {/*                    title2="Gamers"*/}
+            {/*                    color="#fd5587"*/}
+            {/*                />*/}
+            {/*            </Weave>*/}
+            {/*            <Button y={centerY} {...{ progress }} />*/}
+            {/*        </Animated.View>*/}
+            {/*    </PanGestureHandler>*/}
+            {/*</Modal>*/}
         </View>
     );
 };

@@ -51,8 +51,8 @@ export default ({progress, y}: ButtonProps) => {
                 justifyContent: "center",
             }}>
                 <AppIcon
-                    name={"face"}
-                    color={"blue"}
+                    name={"happy_face"}
+                    color={"#0BB5FF"}
                     provider={Icons}
                     size={40}/>
             </View>
