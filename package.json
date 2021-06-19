@@ -12,6 +12,7 @@
     "ios:setup": "cd ios && rimraf Pods && yarn install && pod install && mkdir -p build"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-masked-view/masked-view": "^0.2.4",
     "lottie-react-native": "^3.3.2",
     "react": "16.13.1",
@@ -21,6 +22,13 @@
     "react-native-reanimated": "1.13.3",
     "react-native-redash": "14.2.4",
     "react-native-svg": "^12.1.1",
+    "react-navigation-redux-helpers": "^4.0.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
+    "redux-persist-filesystem-storage": "^2.1.0",
+    "redux-thunk": "^2.3.0",
     "use-force-update": "^1.0.7"
   },
   "devDependencies": {

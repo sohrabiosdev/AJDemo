@@ -7,17 +7,19 @@
  */
 
 import React from 'react';
-import {Alert, Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
-import Home from './screens/Home';
-import {LiquidScreen} from './components/LiquidSwipe';
-import {Happiness} from "./screens/Happiness";
+import {Provider} from "react-redux";
+import store, {persistedStore} from "./boot/store";
+import {PersistGate} from "redux-persist/integration/react";
+import {LiquidScreen} from "./components/LiquidSwipe";
 
 
 export default function App() {
-    return (
-        <View style={{flex: 1, justifyContent: "center"}}>
-            <LiquidScreen />
-        </View>
-    );
+    return  (
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistedStore}>
+                <LiquidScreen />
+            </PersistGate>
+        </Provider>
+    )
 };
 

@@ -2,11 +2,12 @@ import LinearGradient from "react-native-linear-gradient";
 import React, {useEffect, useState} from "react";
 import {AppIcon} from "../lib/IconUtils";
 import {Icons} from "../icons/common";
-import {Text, View} from "react-native";
+import {Alert, Text, View} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import useForceUpdate from "use-force-update";
 import LottieView from "lottie-react-native";
-
+import { getHappinessCount, getHappinessDate, setHappinessCount, setHappinessDate} from "../lib/user";
+const maxFeedbackAllowed = 5;
 const values = [{id: 1, name: "happy_face", isSelected: false}, {
     id: 2,
     name: "neutral_face",
@@ -15,15 +16,22 @@ const values = [{id: 1, name: "happy_face", isSelected: false}, {
 export const Happiness = () => {
     const [faces, setFaces] = useState(values);
     const [showFace, setShowFace] = useState(true);
+    const [showMaxCount, setMaxCount] = useState(false);
     const forceUpdate = useForceUpdate();
 
     const handleOnFacePressed = (selFace) => {
-        faces.map((face) => {
-            face.isSelected = face === selFace;
-            setShowFace(false)
-        });
-        setFaces(faces);
-        forceUpdate();
+        if (getHappinessCount() === maxFeedbackAllowed) {
+            setMaxCount(true);
+        } else {
+            faces.map((face) => {
+                face.isSelected = face === selFace;
+                setShowFace(false)
+            });
+            setFaces(faces);
+            setMaxCount(false);
+            setHappinessCount(getHappinessCount() + 1);
+            forceUpdate();
+        }
     }
 
     const handleOnClosePressed = () => {
@@ -31,8 +39,17 @@ export const Happiness = () => {
     }
 
     useEffect(() => {
-        console.log(faces);
+        checkDateAndResetCounter();
     })
+
+    const checkDateAndResetCounter = () => {
+        const difference = Date.now() - getHappinessDate();
+        const daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+        if (daysDifference > 0) {
+            setHappinessDate(Date.now());
+            setHappinessCount(0);
+        }
+    }
 
     return (
         <View style={{flex: 1}}>
@@ -52,6 +69,13 @@ export const Happiness = () => {
                     {faces.map((face) => {
                         return <Face type={face} onFacePressed={handleOnFacePressed}/>
                     })}
+                </View>}
+                {showMaxCount && <View style={{
+                    height: 70, flexDirection: "row", alignItems: "center", alignSelf: "center",
+                    justifyContent: "center"
+                }}>
+                    <Text numberOfLines={2} style={{fontWeight: "700", fontSize: 15, color: "white", marginTop: 20, paddingHorizontal: 60,
+                    textAlign: "center"}}>You have already given maximum feedback for a day.</Text>
                 </View>}
                 <View style={{height: 10}}/>
                 <View style={{
