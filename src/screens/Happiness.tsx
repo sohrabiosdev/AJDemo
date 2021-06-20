@@ -1,18 +1,19 @@
 import LinearGradient from "react-native-linear-gradient";
-import React, {useEffect, useState} from "react";
-import {AppIcon} from "../lib/IconUtils";
-import {Icons} from "../icons/common";
-import {Alert, Text, View} from "react-native";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { AppIcon } from "../lib/IconUtils";
+import { Icons } from "../icons/common";
+import { Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import useForceUpdate from "use-force-update";
 import LottieView from "lottie-react-native";
-import { getHappinessCount, getHappinessDate, setHappinessCount, setHappinessDate} from "../lib/user";
-const maxFeedbackAllowed = 5;
-const values = [{id: 1, name: "happy_face", isSelected: false}, {
-    id: 2,
-    name: "neutral_face",
-    isSelected: false
-}, {id: 3, name: "sad_face", isSelected: false}]
+import { styles } from "./styles";
+import { getHappinessCount, getHappinessDate, setHappinessCount, setHappinessDate } from "../lib/user";
+
+const maxFeedbackAllowed = 2;
+const values = [{id: 1, name: "happy_face", isSelected: false}, { id: 2, name: "neutral_face", isSelected: false }, {id: 3, name: "sad_face", isSelected: false}]
+
+// Happiness Component - shows the feedback faces and receive the input from the user.
+// Logic for maximum feedbacks integrated in this component.
 export const Happiness = () => {
     const [faces, setFaces] = useState(values);
     const [showFace, setShowFace] = useState(true);
@@ -35,7 +36,6 @@ export const Happiness = () => {
     }
 
     const handleOnClosePressed = () => {
-        console.log("Close Pressed")
     }
 
     useEffect(() => {
@@ -62,18 +62,12 @@ export const Happiness = () => {
                             }}>
                 <CloseButton onClosePressed={handleOnClosePressed}/>
                 <View style={{flex: 1}}/>
-                {showFace && <View style={{
-                    height: 70, flexDirection: "row", alignItems: "center", alignSelf: "center",
-                    justifyContent: "center"
-                }}>
+                {showFace && <View style={styles.face_container}>
                     {faces.map((face) => {
                         return <Face type={face} onFacePressed={handleOnFacePressed}/>
                     })}
                 </View>}
-                {showMaxCount && <View style={{
-                    height: 70, flexDirection: "row", alignItems: "center", alignSelf: "center",
-                    justifyContent: "center"
-                }}>
+                {showMaxCount && <View style={styles.max_count}>
                     <Text numberOfLines={2} style={{fontWeight: "700", fontSize: 15, color: "white", marginTop: 20, paddingHorizontal: 60,
                     textAlign: "center"}}>You have already given maximum feedback for a day.</Text>
                 </View>}
@@ -84,10 +78,10 @@ export const Happiness = () => {
                 }}>
                     {faces.map((face) => {
                         if (face.isSelected) {
-                            return <View style={{justifyContent: "center", alignItems: "center"}}>
+                            return <View style={styles.center}>
                                 <LottieView resizeMode={"contain"} source={require('../../assets/success0.json')}
                                             autoPlay={true} loop={false} style={{height: 150}}/>
-                                <Text style={{fontWeight: "700", fontSize: 15, color: "white", marginTop: 20}}>Thankyou
+                                <Text style={styles.title_thankyou}>Thankyou
                                     for providing your feedback.</Text>
                             </View>
                         } else {
@@ -101,6 +95,7 @@ export const Happiness = () => {
     )
 }
 
+// Face Component - Renders the type of face based upon the props
 export const Face = (props) => {
     const {type, onFacePressed} = props;
     const handlePress = () => {
@@ -108,15 +103,7 @@ export const Face = (props) => {
     }
     return (
         <TouchableOpacity onPress={handlePress}>
-            <View style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                backgroundColor: "#0BB5FF",
-                alignItems: "center",
-                justifyContent: "center",
-                marginHorizontal: 10
-            }}>
+            <View style={styles.face}>
                 <AppIcon
                     name={type.isSelected ? type.name + "_sel" : type.name}
                     color={"white"}
@@ -127,6 +114,7 @@ export const Face = (props) => {
     )
 }
 
+// CloseButton Component - Renders the close button
 export const CloseButton = (props) => {
     const {onClosePressed} = props;
     const handlePress = () => {
